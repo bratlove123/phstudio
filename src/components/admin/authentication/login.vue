@@ -1,12 +1,12 @@
 <template>
     <app-template>
         <div slot="main-form">
-            <form class="" action="#">
+            <div class="" action="#">
 
                 <div class="form-group m-b-20 row">
                     <div class="col-12">
                         <label for="emailaddress">Email address</label>
-                        <input class="form-control" type="email" id="emailaddress" required="" placeholder="Enter your email">
+                        <input class="form-control" v-model="email" type="email" id="emailaddress" required="" placeholder="Enter your email">
                     </div>
                 </div>
 
@@ -14,7 +14,7 @@
                     <div class="col-12">
                         <a href="page-recoverpw.html" class="text-muted pull-right forgot-align"><small>Forgot your password?</small></a>
                         <label for="password">Password</label>
-                        <input class="form-control" type="password" required="" id="password" placeholder="Enter your password">
+                        <input class="form-control" v-model="passsword" type="password" required="" id="password" placeholder="Enter your password">
                     </div>
                 </div>
 
@@ -33,11 +33,11 @@
 
                 <div class="form-group row text-center m-t-10">
                     <div class="col-12">
-                        <button class="btn btn-block btn-custom waves-effect waves-light" type="submit">Sign In</button>
+                        <button v-on:click="signIn" class="btn btn-block btn-custom waves-effect waves-light">Sign In</button>
                     </div>
                 </div>
 
-            </form>
+            </div>
 
             <div class="row m-t-50">
                 <div class="col-sm-12 text-center">
@@ -51,6 +51,7 @@
 <script>
 //Import
 import template from './template.vue';
+import firebase from 'firebase';
 
 export default{
     components:{
@@ -58,11 +59,20 @@ export default{
     },
     data(){
         return {
-
+            email:'',
+            passsword:''
         }
     },
-    created(){
-
+    methods:{
+        signIn: function(){
+            firebase.auth().signInWithEmailAndPassword(this.email, this.passsword).then(
+            (user)=>{
+                this.$router.replace('/');
+            },
+            (err)=>{
+                alert('Opps. '+err.message);
+            });
+        }
     }
 }
 </script>

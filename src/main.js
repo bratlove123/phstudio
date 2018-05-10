@@ -12,6 +12,22 @@ const router=new VueRouter({
   mode:'history'
 });
 
+//Redirect to login page if not authenticate
+router.beforeEach((to, from, next)=>{
+  let currentUser = firebase.auth().currentUser;
+  let requiresAuth=to.matched.some(record=>record.meta.requiresAuth);
+
+  if(requiresAuth && !currentUser){
+    next('login')
+  }
+  else if(!requiresAuth && currentUser){
+    next('/');
+  }
+  else{
+    next();
+  }
+});
+
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyDwn1l7SVLYKU9vcREGrdV1vlJpneWBSxg",
@@ -23,8 +39,13 @@ var config = {
 };
 firebase.initializeApp(config);
 
-new Vue({
-  el: '#app',
-  render: h => h(App),
-  router:router
-})
+let app;
+firebase.auth().onAuthStateChanged((user)=>{
+  if(!app){
+    new Vue({
+      el: '#app',
+      render: h => h(App),
+      router:router
+    })    
+  }
+});
