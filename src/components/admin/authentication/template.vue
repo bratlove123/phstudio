@@ -44,8 +44,5 @@ export default{
 </script>
 
 <style scoped>
-    /* Import required css */
-    @import '../../../assets/app/css/bootstrap.min.css';
-    @import '../../../assets/app/css/metismenu.min.css';
-    @import '../../../assets/app/css/style.css';
+
 </style>

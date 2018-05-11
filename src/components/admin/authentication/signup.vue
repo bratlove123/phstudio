@@ -1,26 +1,37 @@
 <template>
     <app-template>
         <div slot="main-form">
-            <div class="form-horizontal" action="#">
+            <form class="form-horizontal" action="#">
 
                 <div class="form-group row m-b-20">
                     <div class="col-12">
-                        <label for="username">Full Name</label>
-                        <input class="form-control" type="email" id="username" required="" placeholder="Michael Zenaty">
+                        <label for="fullname">Full Name<span class="text-danger">*</span></label>
+                        <input v-model="fullname" v-validate="'required'" class="form-control" type="text" name="fullname" placeholder="Michael Zenaty">
+                        <span v-if="errors.has('fullname')" class="field-error">{{ errors.first('fullname') }}</span>
                     </div>
                 </div>
 
                 <div class="form-group row m-b-20">
                     <div class="col-12">
-                        <label for="emailaddress">Email address</label>
-                        <input v-model="email" class="form-control" type="email" id="emailaddress" required="" placeholder="john@deo.com">
+                        <label for="emailaddress">Email address<span class="text-danger">*</span></label>
+                        <input v-model="email" v-validate="'required|email'" class="form-control" type="email" name="email" required="" placeholder="john@deo.com">
+                        <span v-if="errors.has('email')" class="field-error">{{ errors.first('email') }}</span>
                     </div>
                 </div>
 
                 <div class="form-group row m-b-20">
                     <div class="col-12">
-                        <label for="password">Password</label>
-                        <input v-model="passsword" class="form-control" type="password" required="" id="password" placeholder="Enter your password">
+                        <label for="password">Password<span class="text-danger">*</span></label>
+                        <input v-validate="'required|min:6'" v-model="passsword" class="form-control" type="password" required="" name="password" placeholder="Enter your password">
+                        <span v-if="errors.has('password')" class="field-error">{{ errors.first('password') }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group row m-b-20">
+                    <div class="col-12">
+                        <label for="confirmPassword">Confirm Password<span class="text-danger">*</span></label>
+                        <input v-validate="'required|confirmed:password'" v-model="confirmPassword" class="form-control" type="password" required="" name="confirmPassword" placeholder="Repeat your password">
+                        <span v-if="errors.has('confirmPassword')" class="field-error">{{ errors.first('confirmPassword') }}</span>
                     </div>
                 </div>
 
@@ -28,7 +39,7 @@
                     <div class="col-12">
 
                         <div class="checkbox checkbox-custom">
-                            <input id="remember" type="checkbox" checked="">
+                            <input v-model="remember" id="remember" type="checkbox">
                             <label for="remember">
                                 I accept <a href="#" class="text-custom">Terms and Conditions</a>
                             </label>
@@ -39,11 +50,11 @@
 
                 <div class="form-group row text-center m-t-10">
                     <div class="col-12">
-                        <button v-on:click="signUp" class="btn btn-block btn-custom waves-effect waves-light">Sign Up Free</button>
+                        <button v-bind:disabled="!remember || errors.any() || !isCompleted" v-on:click="signUp" type="submit" class="btn btn-block btn-custom waves-effect waves-light">Sign Up Free</button>
                     </div>
                 </div>
 
-            </div>
+            </form>
 
             <div class="row m-t-50">
                 <div class="col-sm-12 text-center">
@@ -65,26 +76,33 @@ export default{
     },
     data(){
         return {
+            fullname:'',
             email:'',
-            passsword:''
+            passsword:'',
+            confirmPassword:'',
+            remember:false
         }
     },
     methods:{
         signUp: function(){
-            firebase.auth().createUserWithEmailAndPassword(this.email, this.passsword).then(
-            (user)=>{
-                this.$router.replace('/');
-            },
-            (err)=>{
-                alert('Opps. '+err.message);
-            });
+            if(!this.errors.any()){
+                firebase.auth().createUserWithEmailAndPassword(this.email, this.passsword).then(
+                (user)=>{
+                    this.$router.replace('/');
+                },
+                (err)=>{
+                    alert('Opps. '+err.message);
+                });
+            }
+        }
+    },
+    computed:{
+        isCompleted(){
+            return this.fullname&& this.email&&this.passsword&& this.confirmPassword;
         }
     }
 }
 </script>
 
 <style scoped>
-.forgot-align{
-    float: right;
-}
 </style>

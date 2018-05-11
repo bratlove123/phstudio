@@ -6,7 +6,8 @@
                 <div class="form-group m-b-20 row">
                     <div class="col-12">
                         <label for="emailaddress">Email address</label>
-                        <input class="form-control" v-model="email" type="email" id="emailaddress" required="" placeholder="Enter your email">
+                        <input v-validate="'required|email'" class="form-control" v-model="email" type="email" name="email" required="" placeholder="Enter your email">
+                        <span v-if="errors.has('email')" class="field-error">{{ errors.first('email') }}</span>
                     </div>
                 </div>
 
@@ -14,7 +15,8 @@
                     <div class="col-12">
                         <a href="page-recoverpw.html" class="text-muted pull-right forgot-align"><small>Forgot your password?</small></a>
                         <label for="password">Password</label>
-                        <input class="form-control" v-model="passsword" type="password" required="" id="password" placeholder="Enter your password">
+                        <input v-validate="'required|min:6'" class="form-control" v-model="passsword" type="password" required="" name="password" placeholder="Enter your password">
+                        <span v-if="errors.has('password')" class="field-error">{{ errors.first('password') }}</span>
                     </div>
                 </div>
 
@@ -22,7 +24,7 @@
                     <div class="col-12">
 
                         <div class="checkbox checkbox-custom">
-                            <input id="remember" type="checkbox" checked="">
+                            <input id="remember" type="checkbox">
                             <label for="remember">
                                 Remember me
                             </label>
@@ -33,7 +35,7 @@
 
                 <div class="form-group row text-center m-t-10">
                     <div class="col-12">
-                        <button v-on:click="signIn" class="btn btn-block btn-custom waves-effect waves-light">Sign In</button>
+                        <button v-bind:disabled="errors.any() || !isCompleted" v-on:click="signIn" class="btn btn-block btn-custom waves-effect waves-light">Sign In</button>
                     </div>
                 </div>
 
@@ -72,6 +74,11 @@ export default{
             (err)=>{
                 alert('Opps. '+err.message);
             });
+        }
+    },
+    computed:{
+        isCompleted:function(){
+            return this.email&&this.passsword;
         }
     }
 }

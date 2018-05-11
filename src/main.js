@@ -3,6 +3,10 @@ import App from './App.vue'
 import firebase from 'firebase'
 import VueRouter  from 'vue-router'
 import Routes from './routes'
+import VeeValidate from 'vee-validate';
+
+//Config validation
+Vue.use(VeeValidate);
 
 //Config routing
 Vue.use(VueRouter);
