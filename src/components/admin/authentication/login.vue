@@ -13,7 +13,7 @@
 
                 <div class="form-group row m-b-20">
                     <div class="col-12">
-                        <a href="page-recoverpw.html" class="text-muted pull-right forgot-align"><small>Forgot your password?</small></a>
+                        <router-link to="/reset" class="text-muted pull-right forgot-align"><small>Forgot your password?</small></router-link>
                         <label for="password">Password</label>
                         <input v-validate="'required|min:6'" class="form-control" v-model="passsword" type="password" required="" name="password" placeholder="Enter your password">
                         <span v-if="errors.has('password')" class="field-error">{{ errors.first('password') }}</span>

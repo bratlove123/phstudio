@@ -1,7 +1,7 @@
 <template>
     <app-template>
         <div slot="main-form">
-            <form class="form-horizontal" action="#">
+            <div class="form-horizontal" action="#">
 
                 <div class="form-group row m-b-20">
                     <div class="col-12">
@@ -54,7 +54,7 @@
                     </div>
                 </div>
 
-            </form>
+            </div>
 
             <div class="row m-t-50">
                 <div class="col-sm-12 text-center">
