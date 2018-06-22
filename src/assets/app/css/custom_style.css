@@ -12,3 +12,11 @@
     left: 16px;
     top: 67px;
 }
+
+.search-in-form{
+    text-align: right;
+}
+
+.search-in-form input[type='text']{
+    height: 35px;
+}
